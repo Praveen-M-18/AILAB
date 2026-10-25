@@ -1,0 +1,352 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 6 - Logistic Regression | AI & ML Lab</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #101c3a, #174ea6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(23px, 4vw, 32px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #2459bd;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .program-title, .section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(15, 35, 75, 0.05);
+        }
+
+        .program-number {
+            display: inline-block;
+            background: #e8efff;
+            color: #174ea6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            color: #173b78;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #334155;
+            font-size: 16px;
+            margin: 18px 0 10px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .code-header h2 {
+            margin-bottom: 0;
+        }
+
+        button, .nav-button {
+            border: none;
+            border-radius: 7px;
+            padding: 10px 15px;
+            background: #2459bd;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        button:hover, .nav-button:hover {
+            background: #173b78;
+        }
+
+        pre {
+            background: #101827;
+            color: #e2e8f0;
+            padding: 22px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            tab-size: 4;
+        }
+
+        .output {
+            background: #101827;
+            color: #86efac;
+            padding: 20px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            white-space: pre-wrap;
+            line-height: 1.7;
+        }
+
+        .info {
+            background: #eff6ff;
+            border-left: 4px solid #2459bd;
+            border-radius: 6px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 12px;
+                margin-top: 20px;
+            }
+
+            .section, .program-title {
+                padding: 17px;
+            }
+
+            pre {
+                padding: 14px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Artificial Intelligence & Machine Learning Lab</h1>
+    <p>Laboratory Program 6</p>
+</header>
+
+<main class="container">
+
+    <a class="back-link" href="index.html">
+        &larr; Back to Table of Contents
+    </a>
+
+    <section class="program-title">
+        <span class="program-number">PROGRAM 06</span>
+        <h2>Binary Classification Using Logistic Regression</h2>
+    </section>
+
+    <section class="section">
+        <div class="code-header">
+            <h2>Python Program</h2>
+            <button onclick="copyCode()">Copy Code</button>
+        </div>
+
+<pre><code id="python-code">from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.linear_model import LogisticRegression
+
+# Training Data
+train_emails = [
+    "Congratulations! You won a free lottery",
+    "Claim your prize now",
+    "Limited time offer",
+    "Meeting at 10 AM tomorrow",
+    "Project report submission",
+    "Please attend the class today"
+]
+
+# 1 = Spam, 0 = Not Spam
+train_labels = [1, 1, 1, 0, 0, 0]
+print("===== TRAINING DATA =====")
+for email, label in zip(train_emails, train_labels):
+    print(email, "-->", "Spam" if label == 1 else "Not Spam")
+# Convert text into numerical features
+vectorizer = CountVectorizer()
+X_train = vectorizer.fit_transform(train_emails)
+# Train Logistic Regression Model
+model = LogisticRegression()
+model.fit(X_train, train_labels)
+
+# Testing Data
+test_email = ["Free prize available now"]
+print("\n===== TESTING DATA =====")
+print(test_email[0])
+X_test = vectorizer.transform(test_email)
+
+
+# Prediction
+prediction = model.predict(X_test)
+print("\n===== PREDICTION =====")
+print(prediction)
+
+# Result
+print("\n===== RESULT =====")
+if prediction[0] == 1:
+    print("The email is classified as SPAM.")
+else:
+    print("The email is classified as NOT SPAM.")</code></pre>
+    </section>
+
+    <section class="section">
+        <h2>Installation Requirements</h2>
+
+        <p>
+            This program uses Scikit-learn for text feature extraction
+            and Logistic Regression classification.
+        </p>
+
+        <h3>Install Required Library</h3>
+        <pre><code>python -m pip install scikit-learn</code></pre>
+
+        <h3>For Windows (if python doesn't work)</h3>
+        <pre><code>py -m pip install scikit-learn</code></pre>
+
+        <p style="margin-top: 12px;">
+            Wait until the installation finishes before running
+            the Python program.
+        </p>
+
+        <div class="info">
+            <strong>Note:</strong> You need Python 3 installed on your
+            computer. Scikit-learn will install its required dependencies
+            automatically.
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Expected Output</h2>
+
+        <div class="output">===== TRAINING DATA =====
+Congratulations! You won a free lottery --> Spam
+Claim your prize now --> Spam
+Limited time offer --> Spam
+Meeting at 10 AM tomorrow --> Not Spam
+Project report submission --> Not Spam
+Please attend the class today --> Not Spam
+
+===== TESTING DATA =====
+Free prize available now
+
+===== PREDICTION =====
+[1]
+
+===== RESULT =====
+The email is classified as SPAM.</div>
+    </section>
+
+    <div class="footer-nav">
+        <a class="nav-button" href="program5.html">
+            &larr; Previous Program
+        </a>
+        <a class="nav-button" href="index.html">
+            Home
+        </a>
+        <a class="nav-button" href="program7.html">
+            Next Program &rarr;
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    Artificial Intelligence & Machine Learning Lab Programs
+</footer>
+
+<script>
+    function copyCode() {
+        const code = document.getElementById("python-code").textContent;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code)
+                .then(() => alert("Python code copied!"))
+                .catch(() => fallbackCopy(code));
+        } else {
+            fallbackCopy(code);
+        }
+    }
+
+    function fallbackCopy(code) {
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand("copy");
+            alert("Python code copied!");
+        } catch (error) {
+            alert("Unable to copy automatically. Please select and copy the code.");
+        }
+
+        textarea.remove();
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 8 - KNN Loan Classification | AI & ML Lab</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #101c3a, #174ea6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(23px, 4vw, 32px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #2459bd;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .program-title, .section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(15, 35, 75, 0.05);
+        }
+
+        .program-number {
+            display: inline-block;
+            background: #e8efff;
+            color: #174ea6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            color: #173b78;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #334155;
+            font-size: 16px;
+            margin: 18px 0 10px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .code-header h2 {
+            margin-bottom: 0;
+        }
+
+        button, .nav-button {
+            border: none;
+            border-radius: 7px;
+            padding: 10px 15px;
+            background: #2459bd;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        button:hover, .nav-button:hover {
+            background: #173b78;
+        }
+
+        pre {
+            background: #101827;
+            color: #e2e8f0;
+            padding: 22px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            tab-size: 4;
+        }
+
+        .output {
+            background: #101827;
+            color: #86efac;
+            padding: 20px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            white-space: pre-wrap;
+            line-height: 1.7;
+        }
+
+        .info {
+            background: #eff6ff;
+            border-left: 4px solid #2459bd;
+            border-radius: 6px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 12px;
+                margin-top: 20px;
+            }
+
+            .section, .program-title {
+                padding: 17px;
+            }
+
+            pre {
+                padding: 14px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Artificial Intelligence & Machine Learning Lab</h1>
+    <p>Laboratory Program 8</p>
+</header>
+
+<main class="container">
+
+    <a class="back-link" href="index.html">
+        &larr; Back to Table of Contents
+    </a>
+
+    <section class="program-title">
+        <span class="program-number">PROGRAM 08</span>
+        <h2>Classification Using K-Nearest Neighbors (KNN) Algorithm</h2>
+        <p>
+            Loan approval prediction using Applicant Income, Loan Amount,
+            and Credit History.
+        </p>
+    </section>
+
+  
+
+    <section class="section">
+        <div class="code-header">
+            <h2>Python Program</h2>
+            <button onclick="copyCode()">Copy Code</button>
+        </div>
+
+<pre><code id="python-code">import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Step 1: Load Dataset
+data = pd.read_csv("loan_data_100_records.csv")
+
+print("===== LOAN DATASET =====")
+print(data.head())
+print("\nTotal Records:", len(data))
+
+# Step 2: Select Required Columns
+data = data[
+    [
+        "ApplicantIncome",
+        "LoanAmount",
+        "Credit_History",
+        "Loan_Status"
+    ]
+].copy()
+
+# Step 3: Remove Missing Values
+data = data.dropna()
+
+print("\nRecords after removing missing values:", len(data))
+
+# Step 4: Convert Target Column into Numbers
+encoder = LabelEncoder()
+data["Loan_Status"] = encoder.fit_transform(data["Loan_Status"])
+
+# N = 0; Y = 1 (when both labels are present)
+
+# Step 5: Separate Features and Target
+X = data[
+    [
+        "ApplicantIncome",
+        "LoanAmount",
+        "Credit_History"
+    ]
+]
+
+y = data["Loan_Status"]
+
+# Step 6: Split Dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42,
+    stratify=y
+)
+
+print("\nTraining Samples:", len(X_train))
+print("Testing Samples :", len(X_test))
+
+# Step 7: Feature Scaling
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Step 8: Create KNN Model
+knn = KNeighborsClassifier(n_neighbors=5)
+
+# Step 9: Train KNN Model
+knn.fit(X_train_scaled, y_train)
+
+# Step 10: Predict Test Data
+y_pred = knn.predict(X_test_scaled)
+
+print("\n===== ACTUAL VS PREDICTED =====")
+result_table = pd.DataFrame({
+    "Actual": encoder.inverse_transform(y_test.to_numpy()),
+    "Predicted": encoder.inverse_transform(y_pred)
+})
+print(result_table)
+
+# Step 11: Evaluate Model
+accuracy = accuracy_score(y_test, y_pred)
+cm = confusion_matrix(y_test, y_pred)
+
+print("\n===== MODEL PERFORMANCE =====")
+print("KNN Accuracy:", round(accuracy * 100, 2), "%")
+
+print("\nConfusion Matrix:")
+print(cm)
+
+# Step 12: Test a New Applicant
+new_data = pd.DataFrame(
+    [[5000, 150, 1]],
+    columns=[
+        "ApplicantIncome",
+        "LoanAmount",
+        "Credit_History"
+    ]
+)
+
+print("\n===== NEW APPLICANT =====")
+print(new_data)
+
+# Scale new applicant data
+new_data_scaled = scaler.transform(new_data)
+
+# Predict Loan Status
+prediction = knn.predict(new_data_scaled)
+loan_status = encoder.inverse_transform(prediction)
+
+# Step 13: Display Final Prediction
+if loan_status[0] == "Y":
+    print("\nLoan Status: Approved")
+else:
+    print("\nLoan Status: Not Approved")</code></pre>
+    </section>
+
+    <section class="section">
+        <h2>Installation Requirements</h2>
+
+        <p>
+            This program uses Pandas and Scikit-learn for data
+            preprocessing, feature scaling, KNN classification,
+            and model evaluation.
+        </p>
+
+        <h3>Install Required Libraries</h3>
+        <pre><code>python -m pip install pandas scikit-learn</code></pre>
+
+        <h3>Alternative Command for Windows</h3>
+        <pre><code>py -m pip install pandas scikit-learn</code></pre>
+
+        <div class="info">
+            <strong>Important:</strong>
+            Keep <code>loan_data_100_records.csv</code> in the same
+            folder as your Python script, or provide its correct file path.
+            The CSV must contain ApplicantIncome, LoanAmount,
+            Credit_History, and Loan_Status columns.
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Student Reference File</h2>
+    
+        <p>
+            Refer to the student file below for additional
+            information related to this program.
+            <br>
+            You need to download this file and add to your program folder inorder to run this program
+        </p>
+    
+        <a href="./loan_data_100_records.csv" download
+           class="nav-button">
+            Download Student File
+        </a>
+    </section>
+
+    <section class="section">
+        <h2>Expected Output</h2>
+
+        <p>
+            The output contains the first five dataset records,
+            the number of training and testing samples, actual versus
+            predicted loan statuses, accuracy, the confusion matrix,
+            and the prediction for a new applicant.
+        </p>
+
+        <div class="output">===== LOAN DATASET =====
+[First five records from the CSV dataset]
+
+Total Records: 100
+
+Records after removing missing values: [Depends on dataset]
+
+Training Samples: [Depends on remaining records]
+Testing Samples : [Depends on remaining records]
+
+===== ACTUAL VS PREDICTED =====
+   Actual Predicted
+   [Actual and predicted labels]
+
+===== MODEL PERFORMANCE =====
+KNN Accuracy: [Calculated accuracy] %
+
+Confusion Matrix:
+[Calculated confusion matrix]
+
+===== NEW APPLICANT =====
+   ApplicantIncome  LoanAmount  Credit_History
+0             5000         150               1
+
+Loan Status: [Approved or Not Approved]</div>
+
+        <div class="info">
+            <strong>Note:</strong>
+            This is illustrative output, not the exact output from a run.
+            Actual accuracy, record counts, predictions, and the confusion
+            matrix depend on your CSV dataset.
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Result</h2>
+        <p>
+            The K-Nearest Neighbors algorithm was implemented using the
+            loan dataset. The model predicts loan status based on
+            applicant income, loan amount, and credit history.
+            Accuracy and the confusion matrix are used to evaluate
+            its classification performance.
+        </p>
+        <p>
+            The prediction is an educational model output and should
+            not be used as the sole basis for real loan approval decisions.
+        </p>
+    </section>
+
+    <div class="footer-nav">
+        <a class="nav-button" href="program7.html">
+            &larr; Previous Program
+        </a>
+
+        <a class="nav-button" href="index.html">
+            Home
+        </a>
+
+        <a class="nav-button" href="program9.html">
+            Next Program &rarr;
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    Artificial Intelligence & Machine Learning Lab Programs
+</footer>
+
+<script>
+    function copyCode() {
+        const code = document.getElementById("python-code").textContent;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code)
+                .then(() => alert("Python code copied!"))
+                .catch(() => fallbackCopy(code));
+        } else {
+            fallbackCopy(code);
+        }
+    }
+
+    function fallbackCopy(code) {
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            const copied = document.execCommand("copy");
+            if (copied) {
+                alert("Python code copied!");
+            } else {
+                alert("Copy failed. Please select and copy the code manually.");
+            }
+        } catch (error) {
+            alert("Unable to copy automatically. Please select and copy the code.");
+        }
+
+        textarea.remove();
+    }
+</script>
+
+</body>
+</html>
+
+

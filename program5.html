@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 5 - Linear Regression | AI & ML Lab</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #101c3a, #174ea6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(23px, 4vw, 32px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #2459bd;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .program-title, .section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(15, 35, 75, 0.05);
+        }
+
+        .program-number {
+            display: inline-block;
+            background: #e8efff;
+            color: #174ea6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            color: #173b78;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .code-header h2 {
+            margin-bottom: 0;
+        }
+
+        button, .nav-button {
+            border: none;
+            border-radius: 7px;
+            padding: 10px 15px;
+            background: #2459bd;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        button:hover, .nav-button:hover {
+            background: #173b78;
+        }
+
+        pre {
+            background: #101827;
+            color: #e2e8f0;
+            padding: 22px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .output {
+            background: #101827;
+            color: #86efac;
+            padding: 20px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            white-space: pre-wrap;
+        }
+
+        .info {
+            background: #eff6ff;
+            border-left: 4px solid #2459bd;
+            border-radius: 6px;
+            padding: 14px;
+            color: #1e3a8a;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 12px;
+            }
+
+            .section, .program-title {
+                padding: 17px;
+            }
+
+            pre {
+                padding: 14px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Artificial Intelligence & Machine Learning Lab</h1>
+    <p>Laboratory Program 5</p>
+</header>
+
+<main class="container">
+
+    <a class="back-link" href="index.html">
+        &larr; Back to Table of Contents
+    </a>
+
+    <section class="program-title">
+        <span class="program-number">PROGRAM 05</span>
+        <h2>Linear Regression Model and Result Visualization</h2>
+    </section>
+
+    <section class="section">
+        <div class="code-header">
+            <h2>Python Program</h2>
+            <button onclick="copyCode()">Copy Code</button>
+        </div>
+
+<pre><code id="python-code">import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+
+# Independent Variable (House Size)
+X = np.array([800, 1000, 1200, 1400, 1600, 1800]).reshape(-1, 1)
+
+# Dependent Variable (House Price)
+Y = np.array([35, 45, 55, 65, 75, 85])
+
+# Create the model
+model = LinearRegression()
+
+# Train the model
+model.fit(X, Y)
+
+# Predict values
+predicted = model.predict(X)
+
+# Display model parameters
+print("Slope (m):", model.coef_[0])
+print("Intercept (c):", model.intercept_)
+
+# Predict the price of a 1525 sq.ft house
+new_house = np.array([[1525]])
+predicted_price = model.predict(new_house)
+
+print("Predicted Price for 1525 sq.ft house:",
+      predicted_price[0])
+
+# Plot actual data
+plt.scatter(
+    X, Y,
+    color="blue",
+    label="Actual Data"
+)
+
+# Plot regression line
+plt.plot(
+    X, predicted,
+    color="red",
+    linewidth=2,
+    label="Regression Line"
+)
+
+# Plot new predicted value
+plt.scatter(
+    1525,
+    predicted_price[0],
+    color="green",
+    s=100,
+    label="New Prediction"
+)
+
+# Labels
+plt.title("House Size vs House Price")
+plt.xlabel("House Size (sq.ft)")
+plt.ylabel("House Price (Lakhs)")
+plt.legend()
+
+# Display graph
+plt.show()</code></pre>
+    </section>
+
+    
+<section class="section">
+    <h2>Installation Requirements</h2>
+
+    <p>
+        Install the following Python libraries before running
+        this program. NumPy, Matplotlib, and Scikit-learn are
+        required for numerical operations, graph visualization,
+        and linear regression.
+    </p>
+
+    <h3 style="margin: 18px 0 10px;">Install Required Libraries</h3>
+
+    <pre><code>python -m pip install numpy matplotlib scikit-learn</code></pre>
+
+    <h3 style="margin: 18px 0 10px;">For Windows (if python doesn't work)</h3>
+
+    <pre><code>py -m pip install numpy matplotlib scikit-learn</code></pre>
+
+    <p style="margin-top: 12px;">
+        Wait until the installation finishes before running
+        the Python program.
+    </p>
+</section>
+
+
+    <section class="section">
+        <h2>Expected Output</h2>
+        <div class="output">Slope (m): 0.05
+Intercept (c): -5.0
+Predicted Price for 1525 sq.ft house: 71.25</div>
+    </section>
+
+    
+
+    <section class="section">
+        <h2>Result Visualization</h2>
+        <div class="info">
+            Run the Python program to display the graph. It shows actual house prices in blue, the fitted regression line in red, and the predicted price for a 1525 sq.ft house in green.
+        </div>
+    </section>
+
+    <div class="footer-nav">
+        <a class="nav-button" href="program4.html">&larr; Previous Program</a>
+        <a class="nav-button" href="index.html">Home</a>
+        <a class="nav-button" href="program6.html">Next Program &rarr;</a>
+    </div>
+
+</main>
+
+<footer>
+    Artificial Intelligence & Machine Learning Lab Programs
+</footer>
+
+<script>
+    function copyCode() {
+        const code = document.getElementById("python-code").textContent;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code)
+                .then(() => alert("Python code copied!"))
+                .catch(() => fallbackCopy(code));
+        } else {
+            fallbackCopy(code);
+        }
+    }
+
+    function fallbackCopy(code) {
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand("copy");
+            alert("Python code copied!");
+        } catch (error) {
+            alert("Unable to copy automatically. Please select and copy the code.");
+        }
+
+        textarea.remove();
+    }
+</script>
+
+</body>
+</html>

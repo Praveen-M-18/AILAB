@@ -1,0 +1,382 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 7 - SVM Classification | AI & ML Lab</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #101c3a, #174ea6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(23px, 4vw, 32px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #2459bd;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .program-title, .section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(15, 35, 75, 0.05);
+        }
+
+        .program-number {
+            display: inline-block;
+            background: #e8efff;
+            color: #174ea6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            color: #173b78;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #334155;
+            font-size: 16px;
+            margin: 18px 0 10px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .code-header h2 {
+            margin-bottom: 0;
+        }
+
+        button, .nav-button {
+            border: none;
+            border-radius: 7px;
+            padding: 10px 15px;
+            background: #2459bd;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        button:hover, .nav-button:hover {
+            background: #173b78;
+        }
+
+        pre {
+            background: #101827;
+            color: #e2e8f0;
+            padding: 22px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            tab-size: 4;
+        }
+
+        .output {
+            background: #101827;
+            color: #86efac;
+            padding: 20px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            white-space: pre-wrap;
+            line-height: 1.7;
+        }
+
+        .info {
+            background: #eff6ff;
+            border-left: 4px solid #2459bd;
+            border-radius: 6px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 12px;
+                margin-top: 20px;
+            }
+
+            .section, .program-title {
+                padding: 17px;
+            }
+
+            pre {
+                padding: 14px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Artificial Intelligence & Machine Learning Lab</h1>
+    <p>Laboratory Program 7</p>
+</header>
+
+<main class="container">
+
+    <a class="back-link" href="index.html">
+        &larr; Back to Table of Contents
+    </a>
+
+    <section class="program-title">
+        <span class="program-number">PROGRAM 07</span>
+        <h2>Classification Using Support Vector Machine (SVM)</h2>
+    </section>
+
+    <section class="section">
+        <div class="code-header">
+            <h2>Python Program</h2>
+            <button onclick="copyCode()">Copy Code</button>
+        </div>
+
+<pre><code id="python-code">from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    precision_score,
+    recall_score,
+    f1_score
+)
+
+# Load Iris Dataset
+iris = load_iris()
+X = iris.data
+y = iris.target
+print("===== IRIS DATASET =====")
+print("Classes:", iris.target_names)
+print("Total Samples:", len(X))
+# Randomly split the dataset
+# 80% Training and 20% Testing
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2
+)
+print("\n===== TRAINING AND TESTING =====")
+print("Training Samples:", len(X_train))
+print("Testing Samples :", len(X_test))
+# Create SVM Model
+model = SVC(kernel='linear')
+
+# Train the Model
+model.fit(X_train, y_train)
+
+# Prediction
+y_pred = model.predict(X_test)
+print("\n===== PREDICTION =====")
+print("Actual Classes   :", y_test)
+print("Predicted Classes:", y_pred)
+
+# Performance Evaluation
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, average='weighted')
+recall = recall_score(y_test, y_pred, average='weighted')
+f1 = f1_score(y_test, y_pred, average='weighted')
+cm = confusion_matrix(y_test, y_pred)
+
+# Display Results
+print("\n===== PERFORMANCE =====")
+print("Accuracy  :", round(accuracy * 100, 2), "%")
+print("Precision :", round(precision, 4))
+print("Recall    :", round(recall, 4))
+print("F1-Score  :", round(f1, 4))
+
+print("\n===== CONFUSION MATRIX =====")
+print(cm)</code></pre>
+    </section>
+
+    <section class="section">
+        <h2>Installation Requirements</h2>
+
+        <p>
+            This program uses Scikit-learn to load the Iris dataset,
+            train the SVM classifier, and calculate performance metrics.
+        </p>
+
+        <h3>Install Required Library</h3>
+        <pre><code>python -m pip install scikit-learn</code></pre>
+
+        <h3>For Windows (if python doesn't work)</h3>
+        <pre><code>py -m pip install scikit-learn</code></pre>
+
+        <p style="margin-top: 12px;">
+            Wait until the installation finishes before running
+            the Python program.
+        </p>
+
+        <div class="info">
+            <strong>Note:</strong> Python 3 must be installed.
+            Scikit-learn installs its required dependencies automatically.
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Expected Output</h2>
+
+        <p>
+            The program prints the Iris dataset details, training and
+            testing sample counts, predicted classes, evaluation metrics,
+            and confusion matrix.
+        </p>
+
+        <div class="output">===== IRIS DATASET =====
+Classes: ['setosa' 'versicolor' 'virginica']
+Total Samples: 150
+
+===== TRAINING AND TESTING =====
+Training Samples: 120
+Testing Samples : 30
+
+===== PREDICTION =====
+Actual Classes   : [Results depend on random split]
+Predicted Classes: [Predicted class labels]
+
+===== PERFORMANCE =====
+Accuracy  : [Varies by run] %
+Precision : [Varies by run]
+Recall    : [Varies by run]
+F1-Score  : [Varies by run]
+
+===== CONFUSION MATRIX =====
+[Values depend on the test predictions]</div>
+
+        <div class="info">
+            <strong>Important:</strong> The output above illustrates the
+            format, not literal Python output. Your program generates
+            actual class labels, metric values, and a confusion matrix
+            each time it runs. The split is random because
+            <code>random_state</code> is not specified.
+        </div>
+    </section>
+
+    <div class="footer-nav">
+        <a class="nav-button" href="program6.html">
+            &larr; Previous Program
+        </a>
+
+        <a class="nav-button" href="index.html">
+            Home
+        </a>
+
+        <a class="nav-button" href="program8.html">
+            Next Program &rarr;
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    Artificial Intelligence & Machine Learning Lab Programs
+</footer>
+
+<script>
+    function copyCode() {
+        const code = document.getElementById("python-code").textContent;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code)
+                .then(() => alert("Python code copied!"))
+                .catch(() => fallbackCopy(code));
+        } else {
+            fallbackCopy(code);
+        }
+    }
+
+    function fallbackCopy(code) {
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand("copy");
+            alert("Python code copied!");
+        } catch (error) {
+            alert("Unable to copy automatically. Please select and copy the code.");
+        }
+
+        textarea.remove();
+    }
+</script>
+
+</body>
+</html>

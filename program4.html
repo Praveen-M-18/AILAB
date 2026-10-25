@@ -1,0 +1,304 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 4 - Hill Climbing | AI & ML Lab</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #101c3a, #174ea6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(23px, 4vw, 32px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #2459bd;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .program-title, .section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(15, 35, 75, 0.05);
+        }
+
+        .program-number {
+            display: inline-block;
+            background: #e8efff;
+            color: #174ea6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            color: #173b78;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .code-header h2 {
+            margin-bottom: 0;
+        }
+
+        button {
+            border: none;
+            border-radius: 7px;
+            padding: 9px 15px;
+            background: #2459bd;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #173b78;
+        }
+
+        pre {
+            background: #101827;
+            color: #e2e8f0;
+            padding: 22px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            tab-size: 4;
+        }
+
+        .output {
+            background: #101827;
+            color: #86efac;
+            padding: 20px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            white-space: pre-wrap;
+            line-height: 1.7;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        .nav-button {
+            display: inline-block;
+            background: #2459bd;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .nav-button:hover {
+            background: #173b78;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 12px;
+                margin-top: 20px;
+            }
+
+            .section, .program-title {
+                padding: 17px;
+            }
+
+            pre {
+                padding: 14px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Artificial Intelligence & Machine Learning Lab</h1>
+    <p>Laboratory Program 4</p>
+</header>
+
+<main class="container">
+
+    <a class="back-link" href="index.html">
+        &larr; Back to Table of Contents
+    </a>
+
+    <section class="program-title">
+        <span class="program-number">PROGRAM 04</span>
+        <h2>Optimization Problem Using Hill Climbing Algorithm</h2>
+    </section>
+
+    <section class="section">
+        <div class="code-header">
+            <h2>Python Program</h2>
+            <button onclick="copyCode()">Copy Code</button>
+        </div>
+
+<pre><code id="python-code"># Objective Function
+def objective_function(x):
+    return -x * x + 10 * x
+
+# Hill Climbing Function
+def hill_climbing(start):
+    current = start
+    step_size = 1
+    while True:
+        # Generate neighboring solutions
+        left = current - step_size
+        right = current + step_size
+        # Evaluate current and neighboring states
+        current_value = objective_function(current)
+        left_value = objective_function(left)
+        right_value = objective_function(right)
+        # Display current state
+        print("Current x =", current, " Objective Value =", current_value)
+        # Move to the better neighboring state
+        if left_value > current_value:
+            current = left
+        elif right_value > current_value:
+            current = right
+        # Stop if no better neighbor exists
+        else:
+            return current, current_value
+
+# Main Program
+start_point = 0
+best_x, best_value = hill_climbing(start_point)
+print("\nBest Solution Found")
+print("Optimal x =", best_x)
+print("Maximum Value =", best_value)</code></pre>
+    </section>
+
+    <section class="section">
+        <h2>Expected Output</h2>
+
+        <div class="output">Current x = 0  Objective Value = 0
+Current x = 1  Objective Value = 9
+Current x = 2  Objective Value = 16
+Current x = 3  Objective Value = 21
+Current x = 4  Objective Value = 24
+Current x = 5  Objective Value = 25
+
+Best Solution Found
+Optimal x = 5
+Maximum Value = 25</div>
+    </section>
+
+    <div class="footer-nav">
+        <a class="nav-button" href="program3.html">
+            &larr; Previous Program
+        </a>
+        <a class="nav-button" href="index.html">
+            Home
+        </a>
+        <a class="nav-button" href="program5.html">
+            Next Program &rarr;
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    Artificial Intelligence & Machine Learning Lab Programs
+</footer>
+
+<script>
+    function copyCode() {
+        const code = document.getElementById("python-code").textContent;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code)
+                .then(() => alert("Python code copied!"))
+                .catch(() => fallbackCopy(code));
+        } else {
+            fallbackCopy(code);
+        }
+    }
+
+    function fallbackCopy(code) {
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            document.execCommand("copy");
+            alert("Python code copied!");
+        } catch (error) {
+            alert("Unable to copy automatically. Please select and copy the code.");
+        }
+
+        textarea.remove();
+    }
+</script>
+
+</body>
+</html>

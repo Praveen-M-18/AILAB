@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & ML Lab Programs</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fc;
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #101c3a, #174ea6);
+            color: white;
+            padding: 35px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(25px, 4vw, 36px);
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #dbeafe;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .section-heading {
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+            color: #14264b;
+        }
+
+        .section-heading p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .table-wrapper {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 22px rgba(15, 35, 75, 0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #e8efff;
+            color: #173b78;
+        }
+
+        th, td {
+            padding: 17px 20px;
+            text-align: left;
+            border-bottom: 1px solid #e9edf5;
+            line-height: 1.5;
+        }
+
+        th {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #f5f8ff;
+        }
+
+        .program-number {
+            width: 130px;
+            text-align: center;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .program-link {
+            display: block;
+            color: #2459bd;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .program-link:hover {
+            color: #7038c7;
+            text-decoration: underline;
+        }
+
+        .program-link:focus-visible {
+            outline: 2px solid #2459bd;
+            outline-offset: 4px;
+        }
+
+        .status {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4338a8;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px 15px;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 650px) {
+            header {
+                padding: 28px 15px;
+            }
+
+            .container {
+                margin: 25px auto;
+                padding: 0 12px;
+            }
+
+            th, td {
+                padding: 13px 10px;
+            }
+
+            .program-number {
+                width: 55px;
+            }
+
+            .status {
+                display: none;
+            }
+
+            th:last-child,
+            td:last-child {
+                display: none;
+            }
+
+            .section-heading h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Artificial Intelligence & Machine Learning Lab</h1>
+        <p>Laboratory Programs | Python Programming</p>
+    </header>
+
+    <main class="container">
+        <div class="section-heading">
+            <h2>Table of Contents</h2>
+            <p>Select a program name to view its code and experiment details.</p>
+        </div>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="program-number">Program No.</th>
+                        <th>Program Name</th>
+                        <th>Page Status</th>
+                    </tr>
+                </thead>
+
+                <tbody id="program-list">
+                    <tr>
+                        <td class="program-number">1</td>
+                        <td><a class="program-link" href="program1.html">State-Space Search Using Breadth-First Search (BFS) and Depth-First Search (DFS)</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">2</td>
+                        <td><a class="program-link" href="program2.html">8-Puzzle Problem Using State-Space Search</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">3</td>
+                        <td><a class="program-link" href="program3.html">Optimal Pathfinding Using A* Search Algorithm</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">4</td>
+                        <td><a class="program-link" href="program4.html">Optimization Problem Using Hill Climbing Algorithm</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">5</td>
+                        <td><a class="program-link" href="program5.html">Linear Regression Model and Result Visualization</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">6</td>
+                        <td><a class="program-link" href="program6.html">Binary Classification Using Logistic Regression</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">7</td>
+                        <td><a class="program-link" href="program7.html">Classification Using Support Vector Machine (SVM)</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">8</td>
+                        <td><a class="program-link" href="program8.html">Classification Using K-Nearest Neighbors (KNN) Algorithm</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">9</td>
+                        <td><a class="program-link" href="program9.html">Classification Using Feedforward Neural Network with TensorFlow</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                    <tr>
+                        <td class="program-number">10</td>
+                        <td><a class="program-link" href="program10.html">Image Classification Using Convolutional Neural Network (CNN)</a></td>
+                        <td><span class="status">Ready to add</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        Artificial Intelligence & Machine Learning Lab Programs
+    </footer>
+
+</body>
+</html>

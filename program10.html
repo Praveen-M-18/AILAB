@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Program 10 - CNN | AI & ML Lab</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f3f6fc;
+            color: #1e293b;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(135deg, #101c3a, #174ea6);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(23px, 4vw, 32px);
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #dbeafe;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #2459bd;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .program-title, .section {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(15, 35, 75, 0.05);
+        }
+
+        .program-number {
+            display: inline-block;
+            background: #e8efff;
+            color: #174ea6;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            color: #173b78;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            color: #334155;
+            font-size: 16px;
+            margin: 18px 0 10px;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+
+        .code-header h2 {
+            margin-bottom: 0;
+        }
+
+        button, .nav-button {
+            border: none;
+            border-radius: 7px;
+            padding: 10px 15px;
+            background: #2459bd;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        button:hover, .nav-button:hover {
+            background: #173b78;
+        }
+
+        pre {
+            background: #101827;
+            color: #e2e8f0;
+            padding: 22px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 14px;
+            line-height: 1.7;
+            tab-size: 4;
+            white-space: pre;
+        }
+
+        .output {
+            background: #101827;
+            color: #86efac;
+            padding: 20px;
+            border-radius: 9px;
+            overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            white-space: pre-wrap;
+            line-height: 1.7;
+        }
+
+        .info {
+            background: #eff6ff;
+            border-left: 4px solid #2459bd;
+            border-radius: 6px;
+            padding: 14px;
+            margin-top: 12px;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin: 25px 0;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 12px;
+                margin-top: 20px;
+            }
+
+            .section, .program-title {
+                padding: 17px;
+            }
+
+            pre {
+                padding: 14px;
+                font-size: 12px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Artificial Intelligence & Machine Learning Lab</h1>
+    <p>Laboratory Program 10</p>
+</header>
+
+<main class="container">
+
+    <a class="back-link" href="index.html">
+        &larr; Back to Table of Contents
+    </a>
+
+    <section class="program-title">
+        <span class="program-number">PROGRAM 10</span>
+        <h2>Image Classification Using Convolutional Neural Network (CNN)</h2>
+        <p>
+            Handwritten digit recognition using the MNIST dataset
+            and a Convolutional Neural Network implemented with TensorFlow.
+        </p>
+    </section>
+
+    <section class="section">
+        <div class="code-header">
+            <h2>Python Program</h2>
+            <button type="button" onclick="copyCode()">Copy Code</button>
+        </div>
+
+<pre><code id="python-code">import tensorflow as tf
+import numpy as np
+import matplotlib.pyplot as plt
+import random
+
+# Load MNIST Dataset
+(X_train, y_train), (X_test, y_test) = \
+    tf.keras.datasets.mnist.load_data()
+
+# Display Dataset Summary
+print("===== MNIST DATASET SUMMARY =====")
+print("Total Training Images :", len(X_train))
+print("Total Testing Images  :", len(X_test))
+print("Image Size            :", X_train.shape[1], "x", X_train.shape[2])
+print("Number of Classes     : 10")
+print("Classes               : 0 to 9")
+
+# Display Sample Images
+plt.figure(figsize=(8, 4))
+
+for i in range(10):
+    plt.subplot(2, 5, i + 1)
+    plt.imshow(X_train[i], cmap="gray")
+    plt.title("Digit: " + str(y_train[i]))
+    plt.axis("off")
+
+plt.suptitle("Sample MNIST Handwritten Digits")
+plt.tight_layout()
+plt.show()
+
+# Use Smaller Dataset for Faster Execution
+X_train = X_train[:2000]
+y_train = y_train[:2000]
+
+X_test = X_test[:500]
+y_test = y_test[:500]
+
+print("\\n===== DATA USED =====")
+print("Training Images :", len(X_train))
+print("Testing Images  :", len(X_test))
+
+# Normalize Images
+X_train = X_train / 255.0
+X_test = X_test / 255.0
+
+# Add Channel Dimension
+X_train = X_train.reshape(-1, 28, 28, 1)
+X_test = X_test.reshape(-1, 28, 28, 1)
+
+# Create CNN Model
+model = tf.keras.Sequential([
+    tf.keras.layers.Input(shape=(28, 28, 1)),
+    tf.keras.layers.Conv2D(
+        16,
+        (3, 3),
+        activation="relu"
+    ),
+    tf.keras.layers.MaxPooling2D(
+        (2, 2)
+    ),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(
+        32,
+        activation="relu"
+    ),
+    tf.keras.layers.Dense(
+        10,
+        activation="softmax"
+    )
+])
+
+# Compile Model
+model.compile(
+    optimizer="adam",
+    loss="sparse_categorical_crossentropy",
+    metrics=["accuracy"]
+)
+
+# Train Model
+print("\\n===== MODEL TRAINING =====")
+
+model.fit(
+    X_train,
+    y_train,
+    epochs=2,
+    batch_size=64
+)
+
+# Evaluate Model
+loss, accuracy = model.evaluate(
+    X_test,
+    y_test,
+    verbose=0
+)
+
+print("\\n===== MODEL PERFORMANCE =====")
+print(
+    "Test Accuracy:",
+    round(accuracy * 100, 2),
+    "%"
+)
+
+# Select a Random Test Image
+index = random.randint(
+    0,
+    len(X_test) - 1
+)
+
+# Predict the Random Image
+prediction = model.predict(
+    X_test[index:index + 1],
+    verbose=0
+)
+
+predicted_digit = np.argmax(
+    prediction[0]
+)
+
+actual_digit = y_test[index]
+
+# Display Prediction
+print("\\n===== DIGIT PREDICTION =====")
+print("Test Image No. :", index)
+print("Actual Digit   :", actual_digit)
+print("Predicted Digit:", predicted_digit)
+
+# Display the Random Test Image
+plt.imshow(
+    X_test[index].reshape(28, 28),
+    cmap="gray"
+)
+
+plt.title(
+    "Actual: " + str(actual_digit) +
+    "\\nPredicted: " + str(predicted_digit)
+)
+
+plt.axis("off")
+plt.show()</code></pre>
+    </section>
+
+    <section class="section">
+        <h2>Installation Requirements</h2>
+
+        <p>
+            This program requires Python, TensorFlow, NumPy,
+            and Matplotlib.
+        </p>
+
+        <h3>Install Required Libraries</h3>
+        <pre><code>python -m pip install tensorflow numpy matplotlib</code></pre>
+
+        <h3>Alternative Command for Windows</h3>
+        <pre><code>py -m pip install tensorflow numpy matplotlib</code></pre>
+
+        <div class="info">
+            <strong>Note:</strong>
+            Install a Python version compatible with your TensorFlow
+            release. An internet connection may be required to download
+            the MNIST dataset the first time the program runs.
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Expected Output</h2>
+
+        <p>
+            The program displays a dataset summary, ten sample handwritten
+            digits, training progress, test accuracy, and the actual and
+            predicted values of a randomly selected digit.
+        </p>
+
+        <div class="output">===== MNIST DATASET SUMMARY =====
+Total Training Images : 60000
+Total Testing Images  : 10000
+Image Size            : 28 x 28
+Number of Classes     : 10
+Classes               : 0 to 9
+
+===== DATA USED =====
+Training Images : 2000
+Testing Images  : 500
+
+===== MODEL TRAINING =====
+[Training progress displayed for 2 epochs]
+
+===== MODEL PERFORMANCE =====
+Test Accuracy: [Varies by training run] %
+
+===== DIGIT PREDICTION =====
+Test Image No. : [Random index]
+Actual Digit   : [Actual digit]
+Predicted Digit: [Predicted digit]</div>
+
+        <div class="info">
+            <strong>Important:</strong>
+            This is an illustrative output format, not a recorded execution.
+            Accuracy and the randomly selected test image vary between runs.
+            The program also displays sample images and the final prediction
+            image in Matplotlib windows.
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Result</h2>
+        <p>
+            A Convolutional Neural Network was developed using TensorFlow
+            to classify handwritten digits from the MNIST dataset. The model
+            was trained on 2,000 images, evaluated on 500 test images, and
+            used to predict a randomly selected handwritten digit.
+        </p>
+    </section>
+
+    <div class="footer-nav">
+        <a class="nav-button" href="program9.html">
+            &larr; Previous Program
+        </a>
+
+        <a class="nav-button" href="index.html">
+            Home
+        </a>
+
+        <a class="nav-button" href="index.html">
+            Back to Programs &rarr;
+        </a>
+    </div>
+
+</main>
+
+<footer>
+    Artificial Intelligence & Machine Learning Lab Programs
+</footer>
+
+<script>
+    function copyCode() {
+        const code = document.getElementById("python-code").textContent;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(code)
+                .then(() => alert("Python code copied!"))
+                .catch(() => fallbackCopy(code));
+        } else {
+            fallbackCopy(code);
+        }
+    }
+
+    function fallbackCopy(code) {
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        textarea.style.position = "fixed";
+        textarea.style.opacity = "0";
+
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            const copied = document.execCommand("copy");
+
+            if (copied) {
+                alert("Python code copied!");
+            } else {
+                alert("Copy failed. Please select and copy the code manually.");
+            }
+        } catch (error) {
+            alert("Unable to copy automatically. Please select and copy the code.");
+        }
+
+        textarea.remove();
+    }
+</script>
+
+</body>
+</html>
